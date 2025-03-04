@@ -207,8 +207,8 @@
           <horizontal_fov>2.0</horizontal_fov>
           <image>
             <format>R8G8B8</format>
-            <width>640</width>
-            <height>360</height>
+            <width>3840</width>
+            <height>2160</height>
           </image>
           <clip>
             <near>0.05</near>
@@ -237,6 +237,42 @@
       </sensor>
     </link>
 
+    <joint name='cgo3_camera_roll_joint' type='revolute'>
+      <child>cgo3_camera_link</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-0.7854</lower>
+          <upper>0.7854</upper>
+          <effort>100</effort>
+          <velocity>-1</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
+    <joint name='cgo3_camera_pitch_joint' type='revolute'>
+      <child>cgo3_camera_link</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.5708</lower>
+          <upper>0.7854</upper>
+          <effort>100</effort>
+          <velocity>-1</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.1</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
     <joint name='cgo3_camera_joint' type='revolute'>
       <child>cgo3_camera_link</child>
       <parent>base_link</parent>
@@ -264,6 +300,12 @@
         </ode>
       </physics>
     </joint>
+
+    <plugin name="gimbal_controller" filename="libgazebo_gimbal_controller_plugin.so">
+      <joint_yaw>cgo3_camera_joint</joint_yaw>
+      <joint_roll>cgo3_camera_roll_joint</joint_roll>
+      <joint_pitch>cgo3_camera_pitch_joint</joint_pitch>
+    </plugin>
 
     <link name='standard_vtol/imu_link'>
       <pose>0 0 0 0 0 0</pose>
